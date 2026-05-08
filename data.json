@@ -2,9 +2,14 @@
   "lastUpdated": "2026-05-08",
   "verifiedAt": "2026-05-08",
   "owner": "developr02@openmediaads.com",
-  "note": "所有价格已通过 WebFetch + Chrome DevTools 实时拉取 + 截图核实。点击卡片上的价格可查看官网截图作为来源凭证。",
+  "note": "已重新调研 6 个 all-in-one 平台（SocialPilot/Agorapulse/Sendible/Loomly/Statusbrew/Sprout）。所有价格通过 WebFetch + Chrome DevTools 实时核实。点击价格看官网截图。",
   "userNotes": [],
   "categories": [
+    {
+      "id": "all-in-one",
+      "label": "All-in-One（FB+IG+评价+回复+定时）",
+      "color": "violet"
+    },
     {
       "id": "publishing",
       "label": "自动发帖 / 内容日历",
@@ -22,6 +27,367 @@
     }
   ],
   "competitors": [
+    {
+      "id": "sproutsocial",
+      "name": "Sprout Social",
+      "category": "all-in-one",
+      "priceMin": 79,
+      "priceMax": 399,
+      "priceUnit": "USD/seat/月（年付）",
+      "inBudget": false,
+      "recommended": false,
+      "rating": 2,
+      "hasApi": true,
+      "apiType": "REST（Advanced 才有）",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "X",
+        "LinkedIn",
+        "Threads",
+        "Pinterest",
+        "TikTok",
+        "Google Business"
+      ],
+      "website": "https://sproutsocial.com",
+      "docs": "https://sproutsocial.com/integrations/",
+      "priceSource": "https://sproutsocial.com/pricing/",
+      "screenshot": "screenshots/sproutsocial.png",
+      "priceTiers": [
+        {
+          "name": "Essentials",
+          "price": "$79/seat/月",
+          "note": "5 profiles，仅发帖+基础报告"
+        },
+        {
+          "name": "Standard",
+          "price": "$199/seat/月",
+          "note": "+ 统一 inbox + Review Management"
+        },
+        {
+          "name": "Professional",
+          "price": "$299/seat/月",
+          "note": "无限 profiles + AI 撰写"
+        },
+        {
+          "name": "Advanced",
+          "price": "$399/seat/月",
+          "note": "+ AI 回复 + Sprout API + 情感分析"
+        }
+      ],
+      "pros": [
+        "企业级",
+        "Standard 起就有 Review Management"
+      ],
+      "cons": [
+        "远超预算",
+        "AI 自动回复要 Advanced $399"
+      ],
+      "notes": "企业方案，预算高时考虑。"
+    },
+    {
+      "id": "statusbrew",
+      "name": "Statusbrew",
+      "category": "all-in-one",
+      "priceMin": 0,
+      "priceMax": 0,
+      "priceUnit": "USD/月（公开页隐藏，行业行情 ~$129–$299）",
+      "inBudget": false,
+      "recommended": false,
+      "rating": 3,
+      "hasApi": true,
+      "apiType": "REST",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "X",
+        "LinkedIn",
+        "YouTube",
+        "Pinterest",
+        "Google Business",
+        "Threads"
+      ],
+      "website": "https://statusbrew.com",
+      "docs": "https://developer.statusbrew.com",
+      "priceSource": "https://statusbrew.com/pricing",
+      "screenshot": "screenshots/statusbrew.png",
+      "priceTiers": [
+        {
+          "name": "Lite",
+          "price": "公开页隐藏",
+          "note": "5 profiles，FB/IG 发帖+评论隐藏"
+        },
+        {
+          "name": "Standard",
+          "price": "公开页隐藏",
+          "note": "10 profiles + Google Business + Rule Engine 自动评论管理"
+        },
+        {
+          "name": "Premium",
+          "price": "公开页隐藏",
+          "note": "15 profiles + AI 情感分析 + 工作流"
+        },
+        {
+          "name": "Enterprise",
+          "price": "Custom",
+          "note": "无限"
+        }
+      ],
+      "pros": [
+        "Standard 含完整 Rule Engine 自动评论管理",
+        "FB+IG+Google Business 全覆盖"
+      ],
+      "cons": [
+        "公开页不显价格（需联系销售）",
+        "实际起价较高"
+      ],
+      "notes": "公开页不显价格——所列 tiers 是功能而非价格。实际起价根据销售报价。"
+    },
+    {
+      "id": "loomly",
+      "name": "Loomly",
+      "category": "all-in-one",
+      "priceMin": 49,
+      "priceMax": 249,
+      "priceUnit": "USD/月（年付）",
+      "inBudget": false,
+      "recommended": false,
+      "rating": 3,
+      "hasApi": true,
+      "apiType": "REST",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "LinkedIn",
+        "YouTube",
+        "Pinterest",
+        "Google Business",
+        "Threads"
+      ],
+      "website": "https://www.loomly.com",
+      "docs": "https://www.loomly.com/api",
+      "priceSource": "https://www.loomly.com/pricing",
+      "screenshot": "screenshots/loomly.png",
+      "priceTiers": [
+        {
+          "name": "Starter",
+          "price": "$49/月（年付）",
+          "note": "12 账号 / 3 用户，含发帖+评论回复+saved replies"
+        },
+        {
+          "name": "Beyond",
+          "price": "$249/月（年付）",
+          "note": "60 账号 / 无限用户"
+        },
+        {
+          "name": "Enterprise",
+          "price": "Custom",
+          "note": "61+ 账号"
+        }
+      ],
+      "pros": [
+        "FB+IG+Google Business 全覆盖",
+        "评论回复+模板",
+        "AI 回复"
+      ],
+      "cons": [
+        "起价 $49 略贵",
+        "自动化规则较弱"
+      ],
+      "notes": "Starter $49 含 FB+IG+Google Business + saved replies + AI Reply。"
+    },
+    {
+      "id": "sendible",
+      "name": "Sendible",
+      "category": "all-in-one",
+      "priceMin": 29,
+      "priceMax": 750,
+      "priceUnit": "USD/月（年付省 15%）",
+      "inBudget": false,
+      "recommended": false,
+      "rating": 3,
+      "hasApi": true,
+      "apiType": "REST",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "X",
+        "LinkedIn",
+        "Google Business",
+        "YouTube",
+        "WordPress",
+        "Threads",
+        "Bluesky"
+      ],
+      "website": "https://www.sendible.com",
+      "docs": "https://api.sendible.com",
+      "priceSource": "https://www.sendible.com/pricing",
+      "screenshot": "screenshots/sendible.png",
+      "priceTiers": [
+        {
+          "name": "Creator",
+          "price": "$29/月",
+          "note": "1 用户 / 6 profiles，含发帖+评论监控（不支持 IG DM）"
+        },
+        {
+          "name": "Traction",
+          "price": "$89/月",
+          "note": "4 用户 / 24 profiles + Priority Inbox"
+        },
+        {
+          "name": "Scale",
+          "price": "$199/月",
+          "note": "7 用户 / 49 profiles"
+        },
+        {
+          "name": "Advanced",
+          "price": "$299/月",
+          "note": "20 用户 + 白标可选"
+        },
+        {
+          "name": "Enterprise",
+          "price": "$750/月",
+          "note": "80 用户 / 400 profiles"
+        }
+      ],
+      "pros": [
+        "Creator $29 起价低",
+        "FB+IG+Google Business 发帖",
+        "评论监控+回复"
+      ],
+      "cons": [
+        "⚠️ 官方明说不支持 IG DM 回复",
+        "评论自动化规则弱"
+      ],
+      "notes": "⚠️ Sendible 官方文档明确：不支持回复 Instagram 直接消息（DMs）。仅做评论。"
+    },
+    {
+      "id": "agorapulse",
+      "name": "Agorapulse",
+      "category": "all-in-one",
+      "priceMin": 79,
+      "priceMax": 149,
+      "priceUnit": "USD/月（按月付价）",
+      "inBudget": false,
+      "recommended": true,
+      "rating": 5,
+      "hasApi": true,
+      "apiType": "REST",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "Threads",
+        "X",
+        "LinkedIn",
+        "YouTube",
+        "Pinterest",
+        "Google Business",
+        "TikTok",
+        "Bluesky",
+        "Reddit"
+      ],
+      "website": "https://www.agorapulse.com",
+      "docs": "https://help.agorapulse.com",
+      "priceSource": "https://www.agorapulse.com/pricing/",
+      "screenshot": "screenshots/agorapulse.png",
+      "priceTiers": [
+        {
+          "name": "Standard",
+          "price": "$79/月",
+          "note": "1 用户，含 inbox + 1 条自动规则/profile"
+        },
+        {
+          "name": "Professional",
+          "price": "$119/月",
+          "note": "+ 广告评论审核 + 任务分配"
+        },
+        {
+          "name": "Advanced",
+          "price": "$149/月",
+          "note": "无限自动规则 + AI 回复（完整 auto-reply）"
+        },
+        {
+          "name": "Custom",
+          "price": "Contact",
+          "note": "企业方案"
+        }
+      ],
+      "pros": [
+        "FB+IG DM/评论 + Google Reviews 全部一站",
+        "Advanced 含完整自动化规则",
+        "审核工作流强"
+      ],
+      "cons": [
+        "起价 $79 偏贵",
+        "完整自动化要 $149"
+      ],
+      "notes": "专业级 all-in-one。Advanced $149 = FB+IG+Google Reviews 全自动化。"
+    },
+    {
+      "id": "socialpilot",
+      "name": "SocialPilot",
+      "category": "all-in-one",
+      "priceMin": 20,
+      "priceMax": 200,
+      "priceUnit": "USD/月（年付有折扣）",
+      "inBudget": false,
+      "recommended": true,
+      "rating": 5,
+      "hasApi": true,
+      "apiType": "REST",
+      "platforms": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "X",
+        "LinkedIn",
+        "Threads",
+        "YouTube",
+        "Pinterest",
+        "Google Business",
+        "Bluesky"
+      ],
+      "website": "https://www.socialpilot.co",
+      "docs": "https://www.socialpilot.co/api",
+      "priceSource": "https://www.socialpilot.co/pricing",
+      "screenshot": "screenshots/socialpilot.png",
+      "priceTiers": [
+        {
+          "name": "Essentials",
+          "price": "$20/月",
+          "note": "5 账号 / 无 inbox 自动化"
+        },
+        {
+          "name": "Standard",
+          "price": "$40/月",
+          "note": "10 账号 + Social Inbox + 评论自动化（FB/IG/Google Business 全覆盖）"
+        },
+        {
+          "name": "Premium",
+          "price": "$100/月",
+          "note": "20 账号 + 高级分析 + 审批"
+        },
+        {
+          "name": "Ultimate",
+          "price": "$200/月",
+          "note": "40 账号 + 白标"
+        }
+      ],
+      "pros": [
+        "最便宜的 all-in-one",
+        "FB+IG+Google Business 全覆盖",
+        "评论自动化在 Standard 即可",
+        "支持定时发帖"
+      ],
+      "cons": [
+        "Essentials 没有 inbox 自动化",
+        "IG DM 自动回复较弱（需 Standard）"
+      ],
+      "notes": "★ 推荐：Standard $40 是 FB+IG+评价+评论自动化+定时发帖一站式最便宜方案。"
+    },
     {
       "id": "buffer",
       "name": "Buffer",
@@ -709,101 +1075,89 @@
   "decisionPlans": [
     {
       "id": "A",
-      "title": "标准组合（推荐）",
+      "title": "★ 单平台最佳：SocialPilot Standard",
       "stack": [
-        "Buffer Essentials",
-        "ManyChat Essential"
+        "SocialPilot Standard"
       ],
       "breakdown": [
         {
-          "label": "Buffer Essentials",
-          "price": "$5–15",
-          "note": "1–3 通道，$5/通道"
-        },
-        {
-          "label": "ManyChat Essential",
-          "price": "$14",
-          "note": "年付，250 联系人"
+          "label": "SocialPilot Standard",
+          "price": "$40/月",
+          "note": "FB+IG+Google Business 发帖+评论自动化+定时"
         }
       ],
-      "formula": "$5–15 + $14",
-      "monthlyCostMin": 19,
-      "monthlyCostMax": 29,
-      "timelineWeeks": 4,
-      "engineerDays": "6–10",
-      "fitFor": "最稳的组合。文档完善、踩坑少，4 周可 GA。"
+      "formula": "$40",
+      "monthlyCostMin": 40,
+      "monthlyCostMax": 40,
+      "timelineWeeks": 3,
+      "engineerDays": "4–6",
+      "fitFor": "✅ FB+IG 发帖、评论自动回复、Google Reviews 回复、定时发帖一站式。10 账号 / 3 用户。最经济的全功能方案。"
     },
     {
       "id": "B",
-      "title": "极致性价比",
+      "title": "专业级 all-in-one：Agorapulse Advanced",
       "stack": [
-        "Publer Pro/Business",
-        "ManyChat Essential"
+        "Agorapulse Advanced"
       ],
       "breakdown": [
         {
-          "label": "Publer Professional",
-          "price": "$5",
-          "note": "或 Business $10"
-        },
-        {
-          "label": "ManyChat Essential",
-          "price": "$14",
-          "note": "年付，250 联系人"
+          "label": "Agorapulse Advanced",
+          "price": "$149/月",
+          "note": "FB+IG DM/评论+Google Reviews+完整自动化规则+AI 回复"
         }
       ],
-      "formula": "$5–10 + $14",
-      "monthlyCostMin": 19,
-      "monthlyCostMax": 24,
-      "timelineWeeks": 5,
-      "engineerDays": "7–11",
-      "fitFor": "Publer 比 Buffer 便宜，覆盖平台更多（含 Google Business / Telegram）。"
+      "formula": "$149",
+      "monthlyCostMin": 149,
+      "monthlyCostMax": 149,
+      "timelineWeeks": 4,
+      "engineerDays": "5–8",
+      "fitFor": "✅ FB+IG DM 和评论 + Google Reviews 全自动化，无限规则。最完整体验，但贵。"
     },
     {
       "id": "C",
-      "title": "自主可控（Postiz 自托管）",
+      "title": "中端：Agorapulse Standard",
       "stack": [
-        "Postiz (self-host)",
+        "Agorapulse Standard"
+      ],
+      "breakdown": [
+        {
+          "label": "Agorapulse Standard",
+          "price": "$79/月",
+          "note": "1 用户 + 1 条自动规则/profile + Google Reviews"
+        }
+      ],
+      "formula": "$79",
+      "monthlyCostMin": 79,
+      "monthlyCostMax": 79,
+      "timelineWeeks": 3,
+      "engineerDays": "4–6",
+      "fitFor": "✅ FB+IG+Google Reviews 全部一站，但每个 profile 仅 1 条自动规则。规则少但够用可考虑。"
+    },
+    {
+      "id": "D",
+      "title": "极致灵活：Sendible + ManyChat",
+      "stack": [
+        "Sendible Creator",
         "ManyChat Essential"
       ],
       "breakdown": [
         {
-          "label": "Postiz 自托管软件",
-          "price": "$0",
-          "note": "开源；服务器另付 ≈$5–10/月"
+          "label": "Sendible Creator",
+          "price": "$29/月",
+          "note": "FB+IG+Google Business 发帖+评论（不支持 IG DM）"
         },
         {
           "label": "ManyChat Essential",
-          "price": "$14",
-          "note": "年付，250 联系人"
+          "price": "$14/月",
+          "note": "补足 IG DM 自动回复"
         }
       ],
-      "formula": "$0 (软件) + ≈$5–10 (服务器) + $14 (ManyChat)",
-      "monthlyCostMin": 19,
-      "monthlyCostMax": 24,
-      "timelineWeeks": 8,
-      "engineerDays": "12–16",
-      "fitFor": "Postiz 开源软件本身免费，但需自运维服务器。长期去授权费 / 强白标。"
-    },
-    {
-      "id": "D",
-      "title": "最小试水",
-      "stack": [
-        "Buffer Essentials"
-      ],
-      "breakdown": [
-        {
-          "label": "Buffer Essentials",
-          "price": "$5–15",
-          "note": "1–3 通道，$5/通道"
-        }
-      ],
-      "formula": "$5–15",
-      "monthlyCostMin": 5,
-      "monthlyCostMax": 15,
-      "timelineWeeks": 2,
-      "engineerDays": "3–5",
-      "fitFor": "只先验证发帖，自动回复继续用现有 Groq 路径。"
+      "formula": "$29 + $14",
+      "monthlyCostMin": 43,
+      "monthlyCostMax": 43,
+      "timelineWeeks": 5,
+      "engineerDays": "8–12",
+      "fitFor": "Sendible 不支持 IG DM 回复，必须搭配 ManyChat。两个平台两套对接，工程量较大但功能最全。"
     }
   ]
 }
