@@ -93,7 +93,7 @@
       "category": "publishing",
       "priceMin": 0,
       "priceMax": 29,
-      "priceUnit": "自托管 $0；云端 $29/月起",
+      "priceUnit": "自托管软件 $0（服务器自费）；云端 $29/月起",
       "inBudget": true,
       "recommended": true,
       "rating": 4,
@@ -105,7 +105,7 @@
       "priceSource": "https://postiz.com/pricing",
       "screenshot": "screenshots/postiz.png",
       "priceTiers": [
-        { "name": "自托管", "price": "$0", "note": "开源、自部署，无授权费" },
+        { "name": "自托管", "price": "$0 软件费", "note": "开源；需自付服务器约 $5–10/月" },
         { "name": "Standard", "price": "$29/月", "note": "5 通道 / 400 帖/月 / API" },
         { "name": "Team", "price": "$39/月", "note": "10 通道 + 团队" },
         { "name": "Pro", "price": "$49/月", "note": "30 通道" },
@@ -330,37 +330,56 @@
     {
       "id": "A",
       "title": "标准组合（推荐）",
-      "stack": ["Buffer", "ManyChat"],
+      "stack": ["Buffer Essentials", "ManyChat Essential"],
+      "breakdown": [
+        { "label": "Buffer Essentials", "price": "$5–15", "note": "1–3 通道，$5/通道" },
+        { "label": "ManyChat Essential", "price": "$14", "note": "年付，250 联系人" }
+      ],
+      "formula": "$5–15 + $14",
       "monthlyCostMin": 19,
       "monthlyCostMax": 29,
       "timelineWeeks": 4,
       "engineerDays": "6–10",
-      "fitFor": "Buffer Essentials $5/通道（按 1-3 通道 = $5-15）+ ManyChat Essential $14。最稳的组合。"
+      "fitFor": "最稳的组合。文档完善、踩坑少，4 周可 GA。"
     },
     {
       "id": "B",
       "title": "极致性价比",
-      "stack": ["Publer", "ManyChat"],
+      "stack": ["Publer Pro/Business", "ManyChat Essential"],
+      "breakdown": [
+        { "label": "Publer Professional", "price": "$5", "note": "或 Business $10" },
+        { "label": "ManyChat Essential", "price": "$14", "note": "年付，250 联系人" }
+      ],
+      "formula": "$5–10 + $14",
       "monthlyCostMin": 19,
       "monthlyCostMax": 24,
       "timelineWeeks": 5,
       "engineerDays": "7–11",
-      "fitFor": "Publer Business $10（年付 $8）+ ManyChat Essential $14。两者都覆盖更多平台。"
+      "fitFor": "Publer 比 Buffer 便宜，覆盖平台更多（含 Google Business / Telegram）。"
     },
     {
       "id": "C",
       "title": "自主可控（Postiz 自托管）",
-      "stack": ["Postiz (self-host)", "ManyChat"],
-      "monthlyCostMin": 14,
-      "monthlyCostMax": 14,
+      "stack": ["Postiz (self-host)", "ManyChat Essential"],
+      "breakdown": [
+        { "label": "Postiz 自托管软件", "price": "$0", "note": "开源；服务器另付 ≈$5–10/月" },
+        { "label": "ManyChat Essential", "price": "$14", "note": "年付，250 联系人" }
+      ],
+      "formula": "$0 (软件) + ≈$5–10 (服务器) + $14 (ManyChat)",
+      "monthlyCostMin": 19,
+      "monthlyCostMax": 24,
       "timelineWeeks": 8,
       "engineerDays": "12–16",
-      "fitFor": "Postiz 开源自托管 $0 + ManyChat $14。长期去授权费 / 强白标，但需自运维。"
+      "fitFor": "Postiz 开源软件本身免费，但需自运维服务器。长期去授权费 / 强白标。"
     },
     {
       "id": "D",
       "title": "最小试水",
-      "stack": ["Buffer"],
+      "stack": ["Buffer Essentials"],
+      "breakdown": [
+        { "label": "Buffer Essentials", "price": "$5–15", "note": "1–3 通道，$5/通道" }
+      ],
+      "formula": "$5–15",
       "monthlyCostMin": 5,
       "monthlyCostMax": 15,
       "timelineWeeks": 2,

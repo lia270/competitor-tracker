@@ -275,17 +275,39 @@
 
       function planCard(p, i) {
         const highlight = i === 0;
+        const totalLabel =
+          "$" +
+          p.monthlyCostMin +
+          (p.monthlyCostMax !== p.monthlyCostMin ? "–" + p.monthlyCostMax : "") +
+          "/月";
         return `
           <div class="rounded-lg border ${highlight ? "border-blue-400 ring-2 ring-blue-100" : "border-slate-200"} bg-white p-4 shadow-sm">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-semibold text-slate-900">方案 ${escapeHtml(p.id)} · ${escapeHtml(p.title)}</h3>
               ${highlight ? '<span class="text-[10px] px-2 py-0.5 bg-blue-500 text-white rounded-full">推荐</span>' : ""}
             </div>
-            <div class="flex flex-wrap gap-1 mb-2">
+            <div class="flex flex-wrap gap-1 mb-3">
               ${p.stack.map((s) => `<span class="text-[10px] px-2 py-0.5 border border-slate-300 rounded">${escapeHtml(s)}</span>`).join("")}
             </div>
+
+            ${p.breakdown && p.breakdown.length ? `
+              <div class="bg-slate-50 border border-slate-100 rounded p-2 mb-2 text-xs">
+                <div class="text-[10px] font-semibold text-slate-500 mb-1">💰 价格构成</div>
+                ${p.breakdown.map((b) => `
+                  <div class="flex justify-between py-0.5">
+                    <span class="text-slate-700">${escapeHtml(b.label)}</span>
+                    <span class="font-semibold text-slate-900 tabular-nums">${escapeHtml(b.price)}</span>
+                  </div>
+                  ${b.note ? `<div class="text-[10px] text-slate-500 -mt-0.5 mb-1">${escapeHtml(b.note)}</div>` : ""}
+                `).join("")}
+                <div class="flex justify-between py-1 mt-1 border-t border-slate-200">
+                  <span class="font-semibold text-slate-900">合计</span>
+                  <span class="font-bold text-blue-600 tabular-nums">${totalLabel}</span>
+                </div>
+              </div>
+            ` : ""}
+
             <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-              <span>💰 $${p.monthlyCostMin}${p.monthlyCostMax !== p.monthlyCostMin ? `–${p.monthlyCostMax}` : ""}/月</span>
               <span>⏱ ${p.timelineWeeks}周</span>
               <span>👷 ${escapeHtml(p.engineerDays)}人日</span>
             </div>
