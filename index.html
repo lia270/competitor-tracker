@@ -35,11 +35,104 @@
         height: 12px;
         display: inline-block;
       }
+      .price-btn {
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 1px dashed transparent;
+        padding: 2px 6px;
+        border-radius: 6px;
+        margin: -2px -6px;
+      }
+      .price-btn:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+      }
+      #lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 20px;
+      }
+      #lightbox.open {
+        display: flex;
+      }
+      #lightbox-content {
+        background: #fff;
+        border-radius: 12px;
+        max-width: 1200px;
+        max-height: 90vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      #lightbox-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      #lightbox-img-wrap {
+        overflow: auto;
+        background: #f1f5f9;
+        flex: 1;
+      }
+      #lightbox-img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      #lightbox-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        background: #f1f5f9;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        color: #475569;
+      }
+      #lightbox-close:hover {
+        background: #e2e8f0;
+      }
+      .price-tier {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+      .price-tier:nth-child(odd) {
+        background: #f8fafc;
+      }
     </style>
   </head>
   <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
     <div id="root" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <p class="text-slate-500">载入中…</p>
+    </div>
+
+    <div id="lightbox" role="dialog" aria-modal="true">
+      <div id="lightbox-content">
+        <div id="lightbox-header">
+          <div>
+            <div id="lightbox-title" class="font-semibold text-slate-900"></div>
+            <a id="lightbox-source" target="_blank" rel="noopener" class="text-xs text-blue-600 hover:underline"></a>
+          </div>
+          <button id="lightbox-close" aria-label="关闭">✕</button>
+        </div>
+        <div id="lightbox-img-wrap">
+          <img id="lightbox-img" alt="官网定价截图" />
+        </div>
+      </div>
     </div>
 
     <script>
@@ -223,8 +316,10 @@
                 </div>
               </div>
               <div class="text-right">
-                <div class="text-xl font-bold tabular-nums text-slate-900">${priceLabel(c)}</div>
-                <div class="text-[10px] text-slate-500">${escapeHtml(c.priceUnit)}</div>
+                <button class="price-btn text-right" data-screenshot="${escapeHtml(c.screenshot || "")}" data-source="${escapeHtml(c.priceSource || c.website)}" data-name="${escapeHtml(c.name)}" title="点击查看官网定价截图">
+                  <div class="text-xl font-bold tabular-nums text-slate-900">${priceLabel(c)} 📷</div>
+                  <div class="text-[10px] text-slate-500">${escapeHtml(c.priceUnit)}</div>
+                </button>
               </div>
             </div>
 
@@ -233,6 +328,19 @@
               <span class="text-slate-500">API：</span>
               <span class="font-medium text-slate-900">${escapeHtml(c.apiType)}</span>
             </div>
+
+            ${c.priceTiers && c.priceTiers.length ? `
+              <div class="mb-3 border border-slate-100 rounded p-2 bg-slate-50/50">
+                <div class="text-[10px] font-semibold text-slate-500 mb-1.5">💰 套餐明细</div>
+                ${c.priceTiers.map((t) => `
+                  <div class="price-tier">
+                    <span class="font-medium text-slate-700">${escapeHtml(t.name)}</span>
+                    <span class="text-slate-900 font-semibold">${escapeHtml(t.price)}</span>
+                  </div>
+                  ${t.note ? `<div class="text-[10px] text-slate-500 px-2 mb-1">${escapeHtml(t.note)}</div>` : ""}
+                `).join("")}
+              </div>
+            ` : ""}
 
             <div class="flex flex-wrap gap-1 mb-3">
               ${c.platforms.slice(0, 6).map((p) => `<span class="text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-700 rounded">${escapeHtml(p)}</span>`).join("")}
@@ -276,7 +384,40 @@
             render();
           });
         });
+
+        document.querySelectorAll(".price-btn").forEach((el) => {
+          el.addEventListener("click", (e) => {
+            e.preventDefault();
+            const screenshot = el.dataset.screenshot;
+            const source = el.dataset.source;
+            const name = el.dataset.name;
+            if (!screenshot) {
+              window.open(source, "_blank");
+              return;
+            }
+            document.getElementById("lightbox-title").textContent =
+              name + " · 官网定价截图";
+            const a = document.getElementById("lightbox-source");
+            a.href = source;
+            a.textContent = "↗ " + source;
+            document.getElementById("lightbox-img").src = screenshot;
+            document.getElementById("lightbox").classList.add("open");
+          });
+        });
       }
+
+      function closeLightbox() {
+        document.getElementById("lightbox").classList.remove("open");
+      }
+      document
+        .getElementById("lightbox-close")
+        .addEventListener("click", closeLightbox);
+      document.getElementById("lightbox").addEventListener("click", (e) => {
+        if (e.target.id === "lightbox") closeLightbox();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
 
       // 加载数据：fetch 失败（双击打开 file:// 时浏览器会拒绝）则降级到内嵌
       fetch("./data.json")

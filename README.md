@@ -8,8 +8,29 @@
 preview/competitor-tracker/
 ├── index.html      ← 可视化页面（打开即看）
 ├── data.json       ← 数据源（要更新就改这个）
+├── deploy.sh       ← 一键部署到线上
 └── README.md       ← 本说明
 ```
+
+## 线上地址
+
+<https://lia270.github.io/competitor-tracker/>
+
+## 一键部署到线上
+
+改完 `data.json` 后运行：
+
+```bash
+bash preview/competitor-tracker/deploy.sh
+# 或自定义 commit message：
+bash preview/competitor-tracker/deploy.sh "新增 Sprout Social 调研"
+```
+
+脚本做的事：
+1. 首次自动 clone 部署仓库到 `~/.cache/competitor-tracker-deploy`
+2. 同步本地 `preview/competitor-tracker/` 全部文件到部署仓库
+3. 有变更就 commit + push；GitHub Pages 1–2 分钟后自动更新
+4. 没变更则提示"无需部署"
 
 ## 怎么打开预览
 
