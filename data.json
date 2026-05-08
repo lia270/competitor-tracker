@@ -3,6 +3,7 @@
   "verifiedAt": "2026-05-08",
   "owner": "developr02@openmediaads.com",
   "note": "所有价格已通过 WebFetch + Chrome DevTools 实时拉取 + 截图核实。点击卡片上的价格可查看官网截图作为来源凭证。",
+  "userNotes": [],
   "categories": [
     { "id": "publishing", "label": "自动发帖 / 内容日历", "color": "blue" },
     { "id": "auto-reply", "label": "DM / 评论自动回复", "color": "violet" },
@@ -91,6 +92,8 @@
       "id": "postiz",
       "name": "Postiz",
       "category": "publishing",
+      "selfHostable": true,
+      "serverCostNote": "若选自托管：需用我们公司内部服务器（公司有现成服务器，按行业行情约 $5–10/月折算成本，实际可能为 $0）。Postiz 不开源协议为 AGPL-3.0。",
       "priceMin": 0,
       "priceMax": 29,
       "priceUnit": "自托管软件 $0（服务器自费）；云端 $29/月起",

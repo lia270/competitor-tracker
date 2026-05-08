@@ -113,12 +113,68 @@
       .price-tier:nth-child(odd) {
         background: #f8fafc;
       }
+      .note-image {
+        max-width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        margin: 4px 0;
+        cursor: zoom-in;
+      }
+      .note-paste-zone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 6px;
+        padding: 12px;
+        text-align: center;
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 6px;
+        transition: all 0.15s;
+      }
+      .note-paste-zone.dragover {
+        border-color: #3b82f6;
+        background: #eff6ff;
+      }
+      #export-fab {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 50;
+        background: #2563eb;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        cursor: pointer;
+        border: none;
+        display: none;
+      }
+      #export-fab.show {
+        display: block;
+      }
+      #export-fab:hover {
+        background: #1d4ed8;
+      }
+      .self-host-badge {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        color: #92400e;
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        margin: 8px 0;
+      }
     </style>
   </head>
   <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
     <div id="root" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <p class="text-slate-500">载入中…</p>
     </div>
+
+    <button id="export-fab" title="导出包含所有备注的 data.json">
+      📦 导出更新（<span id="draft-count">0</span> 条草稿）
+    </button>
 
     <div id="lightbox" role="dialog" aria-modal="true">
       <div id="lightbox-content">
@@ -142,12 +198,48 @@
         amber: "bg-amber-50 text-amber-700 border-amber-200",
       };
 
+      const DRAFT_KEY = "competitor-tracker-drafts-v1";
       const state = {
         data: null,
         activeCat: "all",
         budgetOnly: false,
         recommendedOnly: false,
+        editMode: false,
+        drafts: loadDrafts(),
       };
+
+      function loadDrafts() {
+        try {
+          return JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+      function saveDrafts() {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(state.drafts));
+        const total = Object.values(state.drafts).reduce(
+          (n, arr) => n + (arr ? arr.length : 0),
+          0
+        );
+        document.getElementById("draft-count").textContent = total;
+        document
+          .getElementById("export-fab")
+          .classList.toggle("show", total > 0);
+      }
+      function getDraftsFor(id) {
+        return state.drafts[id] || [];
+      }
+      function addDraft(id, note) {
+        if (!state.drafts[id]) state.drafts[id] = [];
+        state.drafts[id].push(note);
+        saveDrafts();
+      }
+      function removeDraft(id, index) {
+        if (!state.drafts[id]) return;
+        state.drafts[id].splice(index, 1);
+        if (state.drafts[id].length === 0) delete state.drafts[id];
+        saveDrafts();
+      }
 
       function escapeHtml(s) {
         return String(s).replace(
@@ -218,6 +310,9 @@
               <div class="text-xs text-slate-500 text-right">
                 <div>📅 最后更新：${escapeHtml(d.lastUpdated)}</div>
                 <div>👤 维护人：${escapeHtml(d.owner)}</div>
+                <button id="edit-mode-toggle" class="mt-2 px-3 py-1.5 text-xs font-medium rounded-full border ${state.editMode ? "bg-blue-500 text-white border-blue-500" : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"}">
+                  ${state.editMode ? "✓ 编辑模式开启中" : "✏️ 开启编辑模式"}
+                </button>
               </div>
             </div>
           </header>
@@ -386,6 +481,14 @@
 
             ${c.notes ? `<p class="mt-3 px-2 py-1.5 text-xs italic text-slate-600 bg-slate-50 rounded">${escapeHtml(c.notes)}</p>` : ""}
 
+            ${c.selfHostable && c.serverCostNote ? `
+              <div class="self-host-badge">
+                🖥️ <strong>自托管说明</strong>：${escapeHtml(c.serverCostNote)}
+              </div>
+            ` : ""}
+
+            ${renderNotes(c)}
+
             <div class="flex gap-2 mt-3">
               <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" class="text-xs px-3 py-1 border border-slate-300 rounded hover:bg-slate-50">↗ 官网</a>
               ${c.docs && c.docs !== "—" ? `<a href="${escapeHtml(c.docs)}" target="_blank" rel="noopener" class="text-xs px-3 py-1 text-slate-600 hover:bg-slate-100 rounded">📖 API 文档</a>` : ""}
@@ -393,6 +496,46 @@
           </div>
         `;
       }
+
+      function renderNotes(c) {
+        const saved = (c.userNotes || []).slice();
+        const drafts = getDraftsFor(c.id);
+        const hasContent = saved.length || drafts.length || state.editMode;
+        if (!hasContent) return "";
+
+        const renderNote = (n, opts) => `
+          <div class="border-l-2 ${opts.draft ? "border-amber-400 bg-amber-50" : "border-blue-300 bg-blue-50"} pl-2 pr-2 py-1.5 text-xs my-1.5 rounded-r">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex-1 whitespace-pre-wrap text-slate-800">${escapeHtml(n.text || "")}</div>
+              ${opts.draft ? `<button class="text-red-500 hover:text-red-700 text-[10px]" data-act="remove-draft" data-id="${escapeHtml(c.id)}" data-idx="${opts.index}">删除</button>` : ""}
+            </div>
+            ${(n.images || []).map((img) => `<img class="note-image" src="${img}" />`).join("")}
+            <div class="text-[10px] text-slate-500 mt-1">${opts.draft ? "🟡 草稿（未上线）" : "✅ 已上线"} · ${escapeHtml(n.createdAt || "")}</div>
+          </div>
+        `;
+
+        return `
+          <div class="mt-3 border-t border-slate-100 pt-2">
+            <div class="text-[10px] font-semibold text-slate-500 mb-1">📝 备注</div>
+            ${saved.map((n) => renderNote(n, { draft: false })).join("")}
+            ${drafts.map((n, i) => renderNote(n, { draft: true, index: i })).join("")}
+            ${state.editMode ? `
+              <div class="mt-2">
+                <textarea class="w-full text-xs border border-slate-200 rounded p-2 resize-y" rows="2" placeholder="输入备注内容…" data-id="${escapeHtml(c.id)}" data-role="note-text"></textarea>
+                <div class="note-paste-zone" data-id="${escapeHtml(c.id)}" data-role="paste-zone">
+                  在此粘贴 (⌘+V) 或拖入截图
+                </div>
+                <div class="flex gap-2 mt-1.5">
+                  <button class="text-[11px] px-2.5 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" data-act="add-note" data-id="${escapeHtml(c.id)}">💾 保存草稿</button>
+                  <span class="text-[10px] text-slate-500 self-center" data-role="img-count" data-id="${escapeHtml(c.id)}">无图片</span>
+                </div>
+              </div>
+            ` : ""}
+          </div>
+        `;
+      }
+
+      const pendingImages = {};
 
       function bindEvents() {
         document.querySelectorAll(".chip").forEach((el) => {
@@ -406,6 +549,87 @@
             render();
           });
         });
+
+        const editToggle = document.getElementById("edit-mode-toggle");
+        if (editToggle) {
+          editToggle.addEventListener("click", () => {
+            state.editMode = !state.editMode;
+            render();
+          });
+        }
+
+        document.querySelectorAll('[data-act="add-note"]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.dataset.id;
+            const ta = document.querySelector(
+              `[data-role="note-text"][data-id="${id}"]`
+            );
+            const text = (ta?.value || "").trim();
+            const imgs = pendingImages[id] || [];
+            if (!text && imgs.length === 0) {
+              alert("请输入文字或粘贴/拖入截图");
+              return;
+            }
+            addDraft(id, {
+              text,
+              images: imgs,
+              createdAt: new Date().toISOString().slice(0, 16).replace("T", " "),
+            });
+            pendingImages[id] = [];
+            render();
+          });
+        });
+
+        document.querySelectorAll('[data-act="remove-draft"]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            removeDraft(btn.dataset.id, parseInt(btn.dataset.idx, 10));
+            render();
+          });
+        });
+
+        document
+          .querySelectorAll('[data-role="paste-zone"]')
+          .forEach((zone) => {
+            const id = zone.dataset.id;
+
+            const handleFile = (file) => {
+              if (!file || !file.type.startsWith("image/")) return;
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                if (!pendingImages[id]) pendingImages[id] = [];
+                pendingImages[id].push(e.target.result);
+                const counter = document.querySelector(
+                  `[data-role="img-count"][data-id="${id}"]`
+                );
+                if (counter)
+                  counter.textContent = `📎 ${pendingImages[id].length} 张图片待保存`;
+              };
+              reader.readAsDataURL(file);
+            };
+
+            zone.addEventListener("paste", (e) => {
+              const items = e.clipboardData?.items || [];
+              for (const it of items) {
+                if (it.type.startsWith("image/")) {
+                  handleFile(it.getAsFile());
+                  e.preventDefault();
+                }
+              }
+            });
+            zone.tabIndex = 0;
+            zone.addEventListener("dragover", (e) => {
+              e.preventDefault();
+              zone.classList.add("dragover");
+            });
+            zone.addEventListener("dragleave", () => {
+              zone.classList.remove("dragover");
+            });
+            zone.addEventListener("drop", (e) => {
+              e.preventDefault();
+              zone.classList.remove("dragover");
+              for (const f of e.dataTransfer.files) handleFile(f);
+            });
+          });
 
         document.querySelectorAll(".price-btn").forEach((el) => {
           el.addEventListener("click", (e) => {
@@ -427,6 +651,41 @@
           });
         });
       }
+
+      function exportData() {
+        const merged = JSON.parse(JSON.stringify(state.data));
+        merged.lastUpdated = new Date().toISOString().slice(0, 10);
+        for (const c of merged.competitors) {
+          const drafts = state.drafts[c.id];
+          if (drafts && drafts.length) {
+            c.userNotes = (c.userNotes || []).concat(drafts);
+          }
+        }
+        const json = JSON.stringify(merged, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.json";
+        a.click();
+        URL.revokeObjectURL(url);
+
+        const ok = confirm(
+          "已下载 data.json！\n\n" +
+            "下一步：\n" +
+            "1. 把下载的 data.json 替换掉项目里的 preview/competitor-tracker/data.json\n" +
+            "2. 跑命令：bash preview/competitor-tracker/deploy.sh\n" +
+            "3. 1-2 分钟后线上即可看到\n\n" +
+            "点击「确定」清空本地草稿（推荐已部署后再清）；点击「取消」保留草稿继续编辑。"
+        );
+        if (ok) {
+          state.drafts = {};
+          saveDrafts();
+          render();
+        }
+      }
+
+      document.getElementById("export-fab").addEventListener("click", exportData);
 
       function closeLightbox() {
         document.getElementById("lightbox").classList.remove("open");
@@ -450,6 +709,7 @@
         .then((data) => {
           state.data = data;
           render();
+          saveDrafts();
         })
         .catch(() => {
           document.getElementById("root").innerHTML = `
